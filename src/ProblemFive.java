@@ -2,7 +2,6 @@ import java.util.Scanner;
 import java.io.File;
 
 public class ProblemFive {
-
 	public static void main(String[] args) {
 		Scanner inFile;
 		try {
