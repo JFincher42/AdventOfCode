@@ -14,11 +14,11 @@ public class Tower {
 		this.children = null;
 	}
 	
-	public void Tower(String name) {
+	public Tower(String name) {
 		this.name = name;
 	}
 
-	public void Tower(String name, int weight) {
+	public Tower(String name, int weight) {
 		this.name = name;
 		this.weight = weight;
 	}
