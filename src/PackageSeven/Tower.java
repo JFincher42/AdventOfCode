@@ -3,40 +3,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tower {
-	String name;
-	int weight;
-	ArrayList<Tower> children;
+	public String name;
+	public int weight;
+	public int branchWeight;
+	public ArrayList<Tower> children;
+	public boolean processed;
 
 	public Tower()
 	{
 		this.name = "";
 		this.weight = 0;
+		this.branchWeight = 0;
 		this.children = null;
+		processed = false;
 	}
 	
 	public Tower(String name) {
 		this.name = name;
+		this.branchWeight = 0;
+		processed = false;
 	}
 
 	public Tower(String name, int weight) {
 		this.name = name;
 		this.weight = weight;
-	}
-	
-	public void addWeight(int weight) {
-		this.weight = weight;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public int getWeight() {
-		return this.weight;
-	}
-	
-	public ArrayList<Tower> getChildren(){
-		return this.children;
+		this.branchWeight = 0;
+		processed = false;
 	}
 	
 	public void addChild(Tower child) {
