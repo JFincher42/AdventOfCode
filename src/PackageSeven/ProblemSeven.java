@@ -54,15 +54,35 @@ public class ProblemSeven {
 			}
 		}
 		
-		Tower root;
+		Tower root=null;
 		for (Tower current:towers) {
 			if (!current.processed)
 				root = current;
 		}
 		
-		// Now we have to compute branch weights
-		// 
+		// Now compute the branch weights
+		root.branchWeight = computeBranchWeight(root) + root.weight;
 		
+		// Now find the broken branch
+		//Tower broken = findBroken(root.children);
+		System.out.println("Waiting...");
+	}
+	
+	
+	public static int computeBranchWeight(Tower node) {
+		// If we have no children, the current branch weight is the same as the node weight
+		if (null==node.children || 0==node.children.size()) {
+			node.branchWeight = node.weight;
+			return node.weight;
+		}
+		
+		// Otherwise, we need to process the children
+		int childrenWeight=0;
+		for (int i=0; i<node.children.size(); i++) {
+			childrenWeight += computeBranchWeight(node.children.get(i));
+		}
+		node.branchWeight = childrenWeight+node.weight;
+		return node.branchWeight;
 	}
 	
 	public static Tower findAndRemove(Tower item) {
