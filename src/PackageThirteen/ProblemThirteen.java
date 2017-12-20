@@ -25,6 +25,7 @@ public class ProblemThirteen {
 			System.out.println("Layer[" + lastLayer + "] = " + layers[lastLayer]);
 		}
 		inFile.close();
+//		lastLayer+=1;
 
 		int[] scanner = new int[100];				// Where is the scanner now?
 		int[] direction = new int[100];				// Which way are we moving?
@@ -36,52 +37,90 @@ public class ProblemThirteen {
 
 		// Let's play with some delays
 		int delay = 0;
-		int[] savedScanner=new int[100];
-		int[] savedDirection=new int[100];
-
-		for (int i=0; i<delay; i++)			// Now delay
-			moveScanner(scanner, layers, direction);
+//		int[] savedScanner=new int[100];
+//		int[] savedDirection=new int[100];
+//
+//		for (int i=0; i<delay; i++)			// Now delay
+//			moveScanner(scanner, layers, direction);
 
 		// Save the scanner and direction
-		for (int i=0; i<100; i++) {
-			savedScanner[i] = scanner[i];
-			savedDirection[i] = direction[i];
-		}
+//		for (int i=0; i<100; i++) {
+//			savedScanner[i] = scanner[i];
+//			savedDirection[i] = direction[i];
+//		}
 
-		while (severity!=0) {						// Loop until we get a severity = 0
-			
-			for (int i=0; i<100; i++) {
-				scanner[i]=savedScanner[i];			// Reset the scanner
-				direction[i]=savedDirection[i];		// And directions
-			}
-			
-			delay += 1;								// Increment the delay
-			//for (int i=0; i<delay; i++)			// Now delay
-			moveScanner(scanner, layers, direction);
-
-			// Save these settings
-			for (int i=0; i<100; i++) {
-				savedScanner[i]=scanner[i];			// Reset the scanner
-				savedDirection[i]=direction[i];		// And directions
-			}
-
-
-			severity = 0;							// Reset severity
-
-			// Now loop from 0 to the end of the firewall
-			// If we move into a location where the scanner is, calculate the severity
-			// Then move all the scanners
-			for (int packet=0; packet<100; packet++) {			// Loop through the whole scanner
-				if (layers[packet]!=0 && scanner[packet]==0) {	// Is there a scanner here?
-																// Is the scanner at layer 0?
-					severity += (packet * layers[packet]);		// We're boned, calc the severity
-//					System.out.println("Boned at " + packet + ", layer is " + layers[packet] + ", severity is " + severity);
+//		while (severity!=0) {						// Loop until we get a severity = 0
+//			
+//			for (int i=0; i<100; i++) {
+//				scanner[i]=savedScanner[i];			// Reset the scanner
+//				direction[i]=savedDirection[i];		// And directions
+//			}
+//			
+//			delay += 1;								// Increment the delay
+//			//for (int i=0; i<delay; i++)			// Now delay
+//			moveScanner(scanner, layers, direction);
+//
+//			// Save these settings
+//			for (int i=0; i<100; i++) {
+//				savedScanner[i]=scanner[i];			// Reset the scanner
+//				savedDirection[i]=direction[i];		// And directions
+//			}
+//
+//
+//			severity = 0;							// Reset severity
+//
+//			// Now loop from 0 to the end of the firewall
+//			// If we move into a location where the scanner is, calculate the severity
+//			// Then move all the scanners
+//			for (int packet=0; packet<lastLayer; packet++) {			// Loop through the whole scanner
+//				if (layers[packet]!=0 && scanner[packet]==0) {	// Is there a scanner here?
+//																// Is the scanner at layer 0?
+//					severity += (packet * layers[packet]);		// We're boned, calc the severity
+////					System.out.println("Boned at " + packet + ", layer is " + layers[packet] + ", severity is " + severity);
+//				}
+//				moveScanner(scanner, layers, direction);
+//			}
+//			if (0==delay%1000)
+//				System.out.println("Delay: " + delay + ", severity: " + severity);
+//		}
+		
+//		for delay in range(100000, 500000):
+//		    severity = 0
+//		    caught = false
+//		    for picosecond in range(0, 85):
+//
+//		        layerRange = firewall[picosecond]
+//
+//		        if layerRange == 0:
+//		            continue
+//
+//		        scannerPos = (picosecond+delay) % ((layerRange-1)*2)
+//
+//		        if scannerPos == 0:
+//		            caught = true
+//		            severity += (picosecond+delay) * layerRange
+//
+//		    if severity == 0 and not caught:
+//		        print(delay)
+		boolean caught = false, done=false;
+		while (!done) {
+			delay += 1;
+			severity=0;
+			caught = false;
+			for (int picosecond=0; picosecond<=lastLayer; picosecond++) {
+				int layerRange = layers[picosecond];
+				if (0==layerRange) continue;
+				int scannerPos = (picosecond + delay) % ((layerRange-1)*2);
+				if (0==scannerPos) {
+					caught = true;
+					severity += (picosecond * layerRange);
 				}
-				moveScanner(scanner, layers, direction);
 			}
 			if (0==delay%1000)
 				System.out.println("Delay: " + delay + ", severity: " + severity);
+			done = (0==severity && !caught);
 		}
+		
 		System.out.println("Delay for safe passage = " + delay);
 	}
 
