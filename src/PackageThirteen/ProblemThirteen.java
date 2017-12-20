@@ -28,25 +28,61 @@ public class ProblemThirteen {
 
 		int[] scanner = new int[100];				// Where is the scanner now?
 		int[] direction = new int[100];				// Which way are we moving?
-		for (int i=0; i<direction.length; i++)		// 1 is down, -1 is up
+		for (int i=0; i<100; i++)		// 1 is down, -1 is up
 			direction[i]=1;
 
 		// And the current severity
-		int severity = 0;
+		int severity = -1;
 
-		// Now loop from 0 to the end of the firewall
-		// If we move into a location where the scanner is, calculate the severity
-		// Then move all the scanners
-		for (int packet=0; packet<100; packet++) {			// Loop through the whole scanner
-			if (layers[packet]!=0 && scanner[packet]==0) {	// Is there a scanner here?
-															// Is the scanner at layer 0?
-				severity += (packet * layers[packet]);		// We're boned, calc the severity
-				System.out.println("Boned at " + packet + ", layer is " + layers[packet] + ", severity is " + severity);
-			}
+		// Let's play with some delays
+		int delay = 0;
+		int[] savedScanner=new int[100];
+		int[] savedDirection=new int[100];
+
+		for (int i=0; i<delay; i++)			// Now delay
 			moveScanner(scanner, layers, direction);
+
+		// Save the scanner and direction
+		for (int i=0; i<100; i++) {
+			savedScanner[i] = scanner[i];
+			savedDirection[i] = direction[i];
 		}
 
-		System.out.println("Severity = " + severity);
+		while (severity!=0) {						// Loop until we get a severity = 0
+			
+			for (int i=0; i<100; i++) {
+				scanner[i]=savedScanner[i];			// Reset the scanner
+				direction[i]=savedDirection[i];		// And directions
+			}
+			
+			delay += 1;								// Increment the delay
+			//for (int i=0; i<delay; i++)			// Now delay
+			moveScanner(scanner, layers, direction);
+
+			// Save these settings
+			for (int i=0; i<100; i++) {
+				savedScanner[i]=scanner[i];			// Reset the scanner
+				savedDirection[i]=direction[i];		// And directions
+			}
+
+
+			severity = 0;							// Reset severity
+
+			// Now loop from 0 to the end of the firewall
+			// If we move into a location where the scanner is, calculate the severity
+			// Then move all the scanners
+			for (int packet=0; packet<100; packet++) {			// Loop through the whole scanner
+				if (layers[packet]!=0 && scanner[packet]==0) {	// Is there a scanner here?
+																// Is the scanner at layer 0?
+					severity += (packet * layers[packet]);		// We're boned, calc the severity
+//					System.out.println("Boned at " + packet + ", layer is " + layers[packet] + ", severity is " + severity);
+				}
+				moveScanner(scanner, layers, direction);
+			}
+			if (0==delay%1000)
+				System.out.println("Delay: " + delay + ", severity: " + severity);
+		}
+		System.out.println("Delay for safe passage = " + delay);
 	}
 
 	public static void moveScanner(int[] scanner, int[] layers, int[] direction) {
