@@ -39,6 +39,7 @@ public class ProblemTen {
 		
 		inFile.close();
 		
+		System.out.println("Array: " + inputString.toString());
 		// Start everything at zero
 		int current=0, skip=0;
 		// But now we do 64 rounds
@@ -47,9 +48,11 @@ public class ProblemTen {
 			// Loop through all the items in the inputString
 			for (int i=0; i<inputString.size(); i++) {
 				int length = inputString.get(i);
-				twist(current, length, skip);
-				current += length+skip++;
-				while (current >= SIZE) current-=SIZE;
+				twist(current, length);
+//				current += length+skip++;
+//				while (current >= SIZE) current-=SIZE;
+				current = (current+length+skip) % SIZE;
+				skip+=1;
 			}
 			round--;
 		}
@@ -67,7 +70,7 @@ public class ProblemTen {
 		
 	}
 	
-	public static void twist(int start, int length, int skip) {
+	public static void twist(int start, int length) {
 		int end = start+length-1;
 		if (end>=SIZE) end-=SIZE;
 		
@@ -76,14 +79,14 @@ public class ProblemTen {
 			list[start] = list[end];
 			list[end] = temp;
 			
-			start+=1;
-			if (start>=SIZE) start -= SIZE;
+//			start+=1;
+//			if (start>=SIZE) start -= SIZE;
+			start = (start+1)%SIZE;
 			
 			end-=1;
 			if (end<0) end=SIZE-1;
 			
 			length -= 2;
 		}
-		
 	}
 }
