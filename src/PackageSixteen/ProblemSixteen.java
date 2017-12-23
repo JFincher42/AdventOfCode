@@ -33,36 +33,20 @@ public class ProblemSixteen {
 		}
 		inFile.close();
 
-		for (int prog:programs)
-			System.out.print((char) prog);
-		System.out.println();
-
 		for (int counter=0; counter<1; counter++) {
 			for (String instruction:instructions) {
 				parse(instruction, programs);
 			}
 		}
-
-		// Here's where things end up after everything is done
-		int[] swap = {1,2,8,5,4,11,12,7,0,6,13,9,3,14,10,15};
-		int[] progFinal = {1,2,8,5,4,11,12,7,0,6,13,9,3,14,10,15};
-		// So we do 1,000,000,000 swaps, like this:
-		// In each loop, look at the index and swap count
-		// Change the element by the difference, accounting for wrap-around
 		
-		for (int counter = 0; counter < 1000000000; counter++) {
-			for (int index=0; index<swap.length; index++) {
-				progFinal[index]+=swap[index]-index;
-				if (progFinal[index]<0) progFinal[index]+=swap.length;
-				if (progFinal[index]>swap.length) progFinal[index]-=swap.length;
-			}
-			if (counter%10000==0) System.out.print(".");
-		}
-		System.out.println("done");
-		
-		// Now output the string
 		for (int prog:programs)
 			System.out.print((char) prog);
+		System.out.println();
+
+		// PART TWO
+		// We need to do 1,000,000,000 of these
+		// But we need to do it in a timely manner.
+		// Just spinning the above 1,000,000,000 times will take around 26 days to finish...
 
 	}
 	
