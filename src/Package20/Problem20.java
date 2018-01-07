@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class Problem20 {
 
 	static ArrayList<Particle> particles = new ArrayList<Particle>();
-	
+
 	public static void main(String[] args) {
 		Scanner inFile;
-		
+
 		try {
 			inFile = new Scanner(new File("input/problem20.txt"));
 			inFile.useDelimiter("\\s");
@@ -18,7 +18,7 @@ public class Problem20 {
 		catch (Exception e) {
 			return;
 		}
-		
+
 		while (inFile.hasNext()) {
 			String pos = inFile.next();
 			String vel = inFile.next();
@@ -27,8 +27,8 @@ public class Problem20 {
 			particles.add(new Particle(pos, vel, acc));
 		}
 		inFile.close();
-		
-		
+
+
 		// Figure out the distance for each particle, and which is closest
 		int closest = 0;
 		int closestDistance = particles.get(closest).distance;
@@ -37,7 +37,7 @@ public class Problem20 {
 			current.calcDistance();
 			if (current.distance <= closestDistance) closest = i;
 		}
-		
+
 		// Now we cycle until the closest doesn't change for 500 cycles
 		int cycle = 5000;
 		while (cycle>0) {
@@ -59,19 +59,29 @@ public class Problem20 {
 			if (closest == oldClosest) cycle-=1;
 			else cycle = 5000;
 		}
-		System.out.println("Closest = " + closest);		
-	}
-	
-	void checkCollisions() {
-		int[] xPos = new int[particles.size()];
-		int[] yPos = new int[particles.size()];
-		int[] zPos = new int[particles.size()];
-		
-		for (int i=0; i<particles.size(); i++) {
-			xPos[i] = particles.get(i).posX;
-			yPos[i] = particles.get(i).posY;
-			zPos[i] = particles.get(i).posZ;
-		}
+		System.out.println("Closest = " + closest);
+		int count=0;
+		for (Particle particle:particles)
+			if (particle.inPlay()) count++;
+		System.out.println("Count = " + count);
+			
 	}
 
+	public static void checkCollisions() {
+
+		for (int i=0; i<particles.size()-1; i++) {
+			Particle part1 = particles.get(i);
+			if (part1.inPlay()) {
+				for (int j=i+1; j<particles.size(); j++) {
+					Particle part2 = particles.get(j);
+					if (part2.inPlay()) {
+						if ((part1.posX==part2.posX) && (part1.posY==part2.posY) && (part1.posZ==part2.posZ)) {
+							part1.collided = true;
+							part2.collided = true;
+						}
+					}
+				}
+			}
+		}
+	}
 }
