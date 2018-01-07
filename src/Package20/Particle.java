@@ -8,22 +8,24 @@ public class Particle {
 	public int accX, accY, accZ;
 	
 	public int distance;
+	public boolean collided;
 	
 	public void calcDistance() {
 		//distance = Math.abs(posX) + Math.abs(posY) + Math.abs(posZ);
-		distance = Math.abs(posX + posY + posZ);
+		distance = Math.abs(posX) + Math.abs(posY) + Math.abs(posZ);
 	}
 	
 	public void move() {
-		velX += accX;  posX += velX;
-		velY += accY;  posY += velY;
-		velZ += accZ;  posZ += velZ;
+		velX += accX;  posX += velX;  
+		velY += accY;  posY += velY;  
+		velZ += accZ;  posZ += velZ;  
 	}
 	
 	public Particle() {
 		posX = 0;  posY = 0;  posZ = 0;
 		velX = 0;  velY = 0;  velZ = 0;
 		accX = 0;  accY = 0;  accZ = 0;
+		collided = false;
 	}
 	
 	public Particle(String strPos, String strVel, String strAcc) {
@@ -61,6 +63,11 @@ public class Particle {
 
 		strAcc = strAcc.substring(comma+1);  comma = strAcc.indexOf('>');
 		accZ = Integer.parseInt(strAcc.substring(0, comma));
+		
+		// Collision
+		collided = false;
 	}
+	
+	public boolean inPlay() { return !collided; }
 
 }

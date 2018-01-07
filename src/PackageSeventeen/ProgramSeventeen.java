@@ -14,7 +14,8 @@ public class ProgramSeventeen {
 
 		for (int count = 1; count<=50000000; count++) {
 			insertionPoint = insert(count, insertionPoint);
-			if (count%100000 == 0) System.out.print(".");
+			if (count%1000000 == 0) System.out.println("|");
+			else if (count%100000 == 0) System.out.print(".");
 		}
 		
 		System.out.println(buffer.get(buffer.indexOf(0)+1));
@@ -45,7 +46,11 @@ public class ProgramSeventeen {
 //		else
 //			buffer.add(point+1, value);
 //		
-		buffer.add(point, value);
+		if (buffer.indexOf(0) < point) {
+			buffer.add(-1);
+			buffer.set(point,  value);
+		}
+		else buffer.add(point, value);
 		return point+1;
 	}
 	

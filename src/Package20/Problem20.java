@@ -35,7 +35,7 @@ public class Problem20 {
 		for (int i=0; i<particles.size(); i++) {
 			Particle current = particles.get(i);
 			current.calcDistance();
-			if (current.distance < closestDistance) closest = i;
+			if (current.distance <= closestDistance) closest = i;
 		}
 		
 		// Now we cycle until the closest doesn't change for 500 cycles
@@ -43,17 +43,35 @@ public class Problem20 {
 		while (cycle>0) {
 			closestDistance = particles.get(closest).distance;
 			int oldClosest = closest;
+
+			// Check for collisions
+			checkCollisions();
+
 			for (int i=0; i<particles.size(); i++) {
 				Particle current = particles.get(i);
-				current.move();
-				current.calcDistance();
-				if (current.distance < particles.get(closest).distance) closest = i;
+				if (current.inPlay()) {
+					current.move();
+
+					current.calcDistance();
+					if (current.distance <= particles.get(closest).distance) closest = i;
+				}
 			}
 			if (closest == oldClosest) cycle-=1;
 			else cycle = 5000;
 		}
-		System.out.println("Closest = " + closest);
+		System.out.println("Closest = " + closest);		
+	}
+	
+	void checkCollisions() {
+		int[] xPos = new int[particles.size()];
+		int[] yPos = new int[particles.size()];
+		int[] zPos = new int[particles.size()];
 		
+		for (int i=0; i<particles.size(); i++) {
+			xPos[i] = particles.get(i).posX;
+			yPos[i] = particles.get(i).posY;
+			zPos[i] = particles.get(i).posZ;
+		}
 	}
 
 }
