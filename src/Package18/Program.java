@@ -134,7 +134,7 @@ public class Program {
 		return this.ip;
 	}
 
-	public long eval(String operand) {
+	long eval(String operand) {
 		if (registers.containsKey(operand)) return registers.get(operand);
 		return Integer.parseInt(operand);
 	}

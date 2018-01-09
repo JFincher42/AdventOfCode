@@ -24,7 +24,7 @@ public class ProblemFour {
 			for (int i=0; i<passphrases.length-1; i++)
 				for (int j=i+1; j<passphrases.length; j++) {
 					match = match && !(passphrases[i].equals(passphrases[j]));
-					match = match && !anagram(passphrases[i], passphrases[j]);
+					//match = match && !anagram(passphrases[i], passphrases[j]);
 				}
 			if (match) valid+=1;
 		}

@@ -12,6 +12,7 @@ public class ProblemSixteen {
 		// Setup the programs alignment
 		ArrayList<Integer> programs = new ArrayList<Integer>(16);
 		ArrayList<String> instructions = new ArrayList<String>();
+		ArrayList<String> progList = new ArrayList<String>();
 		
 		for (int i=0; i<16; i++) programs.add(i+'a');
 		
@@ -33,7 +34,22 @@ public class ProblemSixteen {
 		}
 		inFile.close();
 
-		for (int counter=0; counter<1; counter++) {
+		// Let's look for cycles
+		int cycle = 0;
+		for (int counter=0; counter<1000; counter++) {
+			for (String instruction:instructions) {
+				parse(instruction, programs);
+			}
+			String thisProg = convertToString(programs);
+			if (findProg(thisProg, progList)) {
+				break;
+			} else {
+				progList.add(thisProg);  cycle++;
+			}
+		}
+		
+		System.out.println("Cycle = " + cycle);
+		for (int counter=1; counter<1000000000%(cycle); counter++) {
 			for (String instruction:instructions) {
 				parse(instruction, programs);
 			}
@@ -48,6 +64,23 @@ public class ProblemSixteen {
 		// But we need to do it in a timely manner.
 		// Just spinning the above 1,000,000,000 times will take around 26 days to finish...
 
+	}
+	
+	public static String convertToString(ArrayList<Integer> programs) {
+		String retval = "";
+		for (int prog:programs)
+			retval+=(char) prog;
+		return retval;
+	}
+	
+	public static boolean findProg(String prog, ArrayList<String> programs) {
+		if (programs.size()==0) return false;
+		for (String oldProg:programs) {
+			if (prog.equals(oldProg)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public static void parse(String instruction, ArrayList<Integer> programs) {
