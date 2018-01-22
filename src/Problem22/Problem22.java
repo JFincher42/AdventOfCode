@@ -43,18 +43,25 @@ public class Problem22 {
 //		for (char[] row: network)
 //			System.out.println(Arrays.toString(row));
 
-		for(int i=0; i<10000; i++) {
+		for(int i=0; i<10000000; i++) {
 			if (network[carrierRow][carrierCol]=='.') {
 				// Uninfected, infect and turn left
 //				System.out.println("Move " + i + ", clean");
 				carrierDirection= (carrierDirection+3)%4;
+				network[carrierRow][carrierCol]='W';
+			} else if (network[carrierRow][carrierCol]=='W') {
+				// Weakened, infect and don't turn
 				network[carrierRow][carrierCol]='#';
 				infected++;
-			} else {
-				// Infected, clean and turn right
-//				System.out.println("Move " + i + ", infected");
+			} else if (network[carrierRow][carrierCol]=='#') {
+				// Infected, flag and turn right
+				network[carrierRow][carrierCol]='F';
 				carrierDirection=(carrierDirection+1)%4;
+			} else {
+				// Flagged, clean and turn around
+//				System.out.println("Move " + i + ", infected");
 				network[carrierRow][carrierCol]='.';
+				carrierDirection = (carrierDirection+2)%4;
 			}
 			switch (carrierDirection) {
 			case 0:	carrierRow--;  break;
