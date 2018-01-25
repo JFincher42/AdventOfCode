@@ -1,16 +1,12 @@
 import java.util.Scanner;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class ProblemFour {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		Scanner inFile;
-		try {
-			inFile = new Scanner(new File("input\\problem-four.txt"));
-		}
-		catch (Exception e) {
-			return;
-		}
+		inFile = new Scanner(new File("input\\problem-four.txt"));
 		
 		boolean match=true;
 		int valid = 0;
